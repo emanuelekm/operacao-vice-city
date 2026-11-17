@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#130f1c">
+  <title>Operação Vice City | Agente Edu</title>
+  <meta name="description" content="Uma transmissão confidencial da Player 2 para o Agente Edu.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="is-loading">
+
+  <!-- Símbolos reutilizáveis (ilustrações originais) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="palm" viewBox="0 0 200 400">
+        <path d="M100 400 C106 310 92 210 112 92" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round"/>
+        <path d="M112 92 C80 56 36 58 2 104 C40 80 76 82 112 98Z" fill="currentColor"/>
+        <path d="M112 92 C148 52 190 56 200 104 C166 78 136 80 112 98Z" fill="currentColor"/>
+        <path d="M112 92 C96 40 60 18 26 26 C66 34 92 56 110 96Z" fill="currentColor"/>
+        <path d="M112 92 C132 38 168 20 196 34 C160 38 134 60 114 96Z" fill="currentColor"/>
+        <path d="M112 92 C84 104 54 136 46 178 C70 140 92 118 114 100Z" fill="currentColor"/>
+        <path d="M112 92 C142 106 166 140 170 182 C150 142 132 118 110 100Z" fill="currentColor"/>
+        <path d="M112 92 C110 50 118 14 140 0 C128 30 122 60 116 94Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="bird" viewBox="0 0 40 14">
+        <path d="M0 10 Q10 0 20 9 Q30 0 40 10" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      </symbol>
+      <linearGradient id="sunGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ffe9a0"/><stop offset=".55" stop-color="#ff9b54"/><stop offset="1" stop-color="#ff4f9a"/>
+      </linearGradient>
+      <mask id="sunStripes">
+        <rect x="0" y="0" width="400" height="400" fill="#fff"/>
+        <rect x="0" y="232" width="400" height="9" fill="#000"/>
+        <rect x="0" y="260" width="400" height="12" fill="#000"/>
+        <rect x="0" y="290" width="400" height="15" fill="#000"/>
+        <rect x="0" y="322" width="400" height="18" fill="#000"/>
+        <rect x="0" y="356" width="400" height="22" fill="#000"/>
+      </mask>
+    </defs>
+  </svg>
+
+  <!-- Tela de carregamento -->
+  <div class="splash" id="splash" role="dialog" aria-label="Carregando transmissão">
+    <div class="splash-scene" aria-hidden="true">
+      <svg class="splash-sun" viewBox="0 0 400 400"><circle cx="200" cy="200" r="190" fill="url(#sunGrad)" mask="url(#sunStripes)"/></svg>
+      <svg class="splash-palm left"><use href="#palm"/></svg>
+      <svg class="splash-palm right"><use href="#palm"/></svg>
+    </div>
+    <div class="splash-content">
+      <p class="splash-kicker">PLAYER 2 APRESENTA</p>
+      <h1 class="splash-title">OPERAÇÃO<br><span>VICE CITY</span></h1>
+      <div class="loader"><i id="loaderBar"></i></div>
+      <p class="splash-tip" id="splashTip">DICA: hidrate-se. A Player 2 está monitorando.</p>
+      <button class="start-btn" id="startBtn" type="button" hidden>▶ PRESSIONE START</button>
+    </div>
+  </div>
+
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">VC</span><span>VICE CITY<small>PLAYER 2 TRANSMISSION</small></span></div>
+    <span class="classified"><i></i> MENSAGEM CONFIDENCIAL</span>
+  </header>
+
+  <!-- HERO com cena de pôr do sol -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="hero-scene" aria-hidden="true">
+      <svg class="scene" viewBox="0 0 1440 640" preserveAspectRatio="xMidYMax slice">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#1c0d2e"/><stop offset=".35" stop-color="#5a1b55"/>
+            <stop offset=".62" stop-color="#d9447c"/><stop offset=".8" stop-color="#ff9154"/><stop offset="1" stop-color="#ffc56e"/>
+          </linearGradient>
+          <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#7b2a6b"/><stop offset="1" stop-color="#130f1c"/>
+          </linearGradient>
+        </defs>
+        <rect width="1440" height="640" fill="url(#sky)"/>
+        <g class="stars" fill="#fff">
+          <circle cx="120" cy="60" r="1.6"/><circle cx="300" cy="110" r="1.2"/><circle cx="520" cy="40" r="1.8"/>
+          <circle cx="880" cy="70" r="1.3"/><circle cx="1050" cy="35" r="1.7"/><circle cx="1260" cy="95" r="1.4"/>
+          <circle cx="1380" cy="50" r="1.2"/><circle cx="700" cy="120" r="1.1"/><circle cx="200" cy="160" r="1"/>
+        </g>
+        <g class="sun-wrap"><svg x="520" y="250" width="400" height="400" viewBox="0 0 400 400"><circle cx="200" cy="200" r="190" fill="url(#sunGrad)" mask="url(#sunStripes)"/></svg></g>
+        <g class="clouds" fill="#ff9fc9" opacity=".35">
+          <rect class="cloud c1" x="140" y="250" width="260" height="10" rx="5"/>
+          <rect class="cloud c2" x="1000" y="290" width="320" height="12" rx="6"/>
+          <rect class="cloud c3" x="380" y="320" width="180" height="8" rx="4"/>
+        </g>
+        <g class="birds" color="#2a1236">
+          <g class="bird b1"><svg x="300" y="180" width="34" height="12"><use href="#bird"/></svg></g>
+          <g class="bird b2"><svg x="345" y="200" width="24" height="9"><use href="#bird"/></svg></g>
+          <g class="bird b3"><svg x="1080" y="160" width="30" height="11"><use href="#bird"/></svg></g>
+        </g>
+        <path fill="#2b1236" d="M0 470 V420 h40 v-30 h30 v-50 h44 v60 h26 v-90 h50 v110 h30 v-40 h40 v50 h60 v-120 h20 v-20 h40 v20 h20 v140
+          h30 v-60 h50 v70 h1050 V470Z"/>
+        <path fill="#2b1236" d="M1440 470 V400 h-40 v-60 h-50 v80 h-30 v-140 h-24 v-24 h-30 v24 h-24 v160 h-40 v-70 h-60 v90 h-40 v-40 h-50 v60 H900 V470Z"/>
+        <g class="windows" fill="#ffcf7a">
+          <rect x="80" y="370" width="6" height="8"/><rect x="164" y="320" width="6" height="8"/><rect x="164" y="350" width="6" height="8"/>
+          <rect x="306" y="320" width="6" height="8"/><rect x="326" y="360" width="6" height="8"/><rect x="1200" y="300" width="6" height="8"/>
+          <rect x="1220" y="340" width="6" height="8"/><rect x="1370" y="370" width="6" height="8"/><rect x="1100" y="400" width="6" height="8"/>
+        </g>
+        <rect y="468" width="1440" height="172" fill="url(#sea)"/>
+        <g class="reflection" fill="#ffb36b">
+          <rect x="640" y="485" width="160" height="4" rx="2" opacity=".8"/>
+          <rect x="610" y="505" width="220" height="4" rx="2" opacity=".6"/>
+          <rect x="660" y="528" width="120" height="3" rx="2" opacity=".5"/>
+          <rect x="590" y="552" width="260" height="3" rx="2" opacity=".35"/>
+        </g>
+        <g class="palm p1"><svg x="-30" y="190" width="260" height="460" color="#120a1c"><use href="#palm"/></svg></g>
+        <g class="palm p2"><svg x="150" y="300" width="160" height="340" color="#1a0f26"><use href="#palm"/></svg></g>
+        <g class="palm p3"><svg x="1210" y="170" width="280" height="480" color="#120a1c"><use href="#palm"/></svg></g>
+        <g class="palm p4"><svg x="1110" y="320" width="150" height="320" color="#1a0f26"><use href="#palm"/></svg></g>
+      </svg>
+    </div>
+
+    <div class="hero-content">
+      <p class="eyebrow reveal">TRANSMISSÃO ESPECIAL // DESTINATÁRIO: AGENTE EDU</p>
+      <h2 class="hero-title reveal" id="heroTitle">PREPARE-SE<br><span class="neon">PARA VICE CITY.</span></h2>
+      <p class="intro reveal">Edu, sua próxima grande aventura está quase começando. E a sua Player 2 preparou uma operação inteira só pra você.</p>
+    </div>
+  </section>
+
+  <main class="page">
+    <section class="countdown-card reveal" aria-label="Contagem regressiva para o lançamento">
+      <div class="countdown-heading"><span>CONTAGEM REGRESSIVA</span><span class="live-dot" id="liveStatus">● AGUARDANDO LANÇAMENTO</span></div>
+      <div class="timer" id="countdown">
+        <div class="time-unit"><strong id="days">00</strong><span>DIAS</span></div>
+        <b class="separator">:</b>
+        <div class="time-unit"><strong id="hours">00</strong><span>HORAS</span></div>
+        <b class="separator">:</b>
+        <div class="time-unit"><strong id="minutes">00</strong><span>MIN</span></div>
+        <b class="separator">:</b>
+        <div class="time-unit"><strong id="seconds">00</strong><span>SEG</span></div>
+      </div>
+      <p class="launch-date" id="launchLabel">19 DE NOVEMBRO DE 2026 · 00H (HORÁRIO DE BRASÍLIA)</p>
+    </section>
+
+    <!-- Ficha do agente -->
+    <section class="dossier reveal" aria-labelledby="dossierTitle">
+      <div class="dossier-photo" aria-hidden="true">
+        <svg viewBox="0 0 120 140">
+          <rect width="120" height="140" fill="#2b1b35"/>
+          <circle cx="60" cy="52" r="24" fill="#ff5aa8" opacity=".85"/>
+          <path d="M18 140 C22 98 98 98 102 140Z" fill="#ff5aa8" opacity=".85"/>
+          <rect x="0" y="0" width="120" height="140" fill="none" stroke="#ff78b5" stroke-width="2" stroke-dasharray="4 4"/>
+        </svg>
+        <img class="agent-photo" src="foto.jpg" alt="Foto do Agente Edu" onerror="this.remove()">
+        <span class="stamp">APROVADO</span>
+      </div>
+      <div class="dossier-body">
+        <p class="eyebrow">FICHA DO AGENTE · ARQUIVO #1911</p>
+        <h3 id="dossierTitle">AGENTE EDU</h3>
+        <dl>
+          <div><dt>Status</dt><dd>Ansioso em nível máximo</dd></div>
+          <div><dt>Plataforma</dt><dd>PS5, controle carregado</dd></div>
+          <div><dt>Parceira de missão</dt><dd>Player 2 ♥</dd></div>
+          <div><dt>Nível de procurado</dt><dd class="wanted" aria-label="5 estrelas"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></dd></div>
+          <div><dt>Crime</dt><dd>Roubar o coração da Player 2</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Missões -->
+    <section class="missions" aria-labelledby="missionsTitle">
+      <p class="eyebrow reveal">ORDENS DA PLAYER 2</p>
+      <h3 class="section-title reveal" id="missionsTitle">SUAS MISSÕES</h3>
+      <div class="instruction reveal"><span class="number">01</span><div><h4>PREPARE-SE</h4><p>Deixe seu PS5 pronto, controle carregado e tudo preparado para a estreia.</p></div><span class="check">✓</span></div>
+      <div class="instruction reveal"><span class="number">02</span><div><h4>ABRA SEU KIT</h4><p>A caixa que chegou é sua. Pegue seus suprimentos e confira tudo o que sua Player 2 preparou.</p></div><span class="check">✓</span></div>
+      <div class="instruction reveal"><span class="number">03</span><div><h4>APROVEITE A EXPERIÊNCIA</h4><p>Relaxe, aproveite cada segundo e não esqueça: essa missão foi preparada com carinho para você.</p></div><span class="check">✓</span></div>
+    </section>
+
+    <!-- Cartões postais (ilustrações originais) -->
+    <section class="postcards" aria-labelledby="postcardsTitle">
+      <p class="eyebrow reveal">SAUDAÇÕES DE</p>
+      <h3 class="section-title reveal" id="postcardsTitle">VICE CITY</h3>
+      <div class="cards">
+        <figure class="postcard reveal">
+          <svg viewBox="0 0 300 200" role="img" aria-label="Praia ensolarada com coqueiro">
+            <defs><linearGradient id="pc1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5ad1ff"/><stop offset="1" stop-color="#ffd3e8"/></linearGradient></defs>
+            <rect width="300" height="200" fill="url(#pc1)"/>
+            <circle class="pc-sun" cx="230" cy="55" r="26" fill="#ffe08a"/>
+            <rect y="118" width="300" height="40" fill="#2fb7d6"/>
+            <path class="wave" d="M0 124 Q15 118 30 124 T60 124 T90 124 T120 124 T150 124 T180 124 T210 124 T240 124 T270 124 T300 124 T330 124" fill="none" stroke="#fff" stroke-width="2" opacity=".7"/>
+            <path d="M0 150 Q150 130 300 152 V200 H0Z" fill="#ffd7a0"/>
+            <g class="palm sway"><svg x="10" y="20" width="110" height="180" color="#1d4a3a"><use href="#palm"/></svg></g>
+          </svg>
+          <figcaption>OCEAN BEACH</figcaption>
+        </figure>
+        <figure class="postcard reveal">
+          <svg viewBox="0 0 300 200" role="img" aria-label="Cidade à noite com letreiro neon">
+            <rect width="300" height="200" fill="#160c24"/>
+            <circle cx="250" cy="40" r="16" fill="#ffe7f3"/><circle cx="244" cy="36" r="16" fill="#160c24"/>
+            <path d="M0 200 V120 h30 v-30 h26 v50 h20 v-80 h34 v60 h24 v-40 h30 v70 h22 v-90 h34 v100 h26 v-50 h30 v40 h24 V200Z" fill="#2b1840"/>
+            <g fill="#ffcf7a" class="win-blink">
+              <rect x="38" y="100" width="5" height="6"/><rect x="90" y="80" width="5" height="6"/><rect x="98" y="110" width="5" height="6"/>
+              <rect x="190" y="70" width="5" height="6"/><rect x="200" y="100" width="5" height="6"/><rect x="250" y="140" width="5" height="6"/>
+            </g>
+            <text class="neon-sign" x="150" y="62" text-anchor="middle" font-family="Pacifico, cursive" font-size="34" fill="none" stroke="#ff5aa8" stroke-width="1.6">Vice</text>
+            <rect y="186" width="300" height="14" fill="#ff5aa8" opacity=".25"/>
+          </svg>
+          <figcaption>NEON NIGHTS</figcaption>
+        </figure>
+        <figure class="postcard reveal">
+          <svg viewBox="0 0 300 200" role="img" aria-label="Estrada ao pôr do sol">
+            <defs><linearGradient id="pc3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a1550"/><stop offset=".6" stop-color="#ff5a8a"/><stop offset="1" stop-color="#ffb56b"/></linearGradient></defs>
+            <rect width="300" height="200" fill="url(#pc3)"/>
+            <svg x="95" y="40" width="110" height="110" viewBox="0 0 400 400"><circle cx="200" cy="200" r="190" fill="url(#sunGrad)" mask="url(#sunStripes)"/></svg>
+            <rect y="112" width="300" height="88" fill="#1c0f2a"/>
+            <path d="M120 112 L180 112 L300 200 L0 200Z" fill="#2c1840"/>
+            <g class="road-lines" stroke="#ffcf7a" stroke-width="3" stroke-dasharray="10 14"><path d="M150 114 L150 200"/></g>
+            <svg x="-6" y="40" width="70" height="120" color="#120a1c"><use href="#palm"/></svg>
+            <svg x="236" y="40" width="70" height="120" color="#120a1c"><use href="#palm"/></svg>
+          </svg>
+          <figcaption>SUNSET DRIVE</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Carta secreta -->
+    <section class="secret-letter reveal" id="secretLetter" aria-live="polite">
+      <span class="lock" id="letterLock" aria-hidden="true">🔒</span>
+      <div>
+        <h3 id="letterTitle">ARQUIVO BLOQUEADO</h3>
+        <p id="letterText">Tem uma carta no fundo da caixa. Ela só pode ser aberta no dia do lançamento. Nada de espiar, agente.</p>
+      </div>
+    </section>
+
+    <div class="final-message reveal">
+      <p>Uma última instrução, agente:</p>
+      <strong>PROIBIDO FICAR SEM SNACKS.<br>DIVIRTA-SE. SUA PLAYER 2 TE AMA! ♥</strong>
+    </div>
+    <p class="signature">FIM DA TRANSMISSÃO · BOA MISSÃO, EDU.</p>
+  </main>
+
+  <footer>PROJETO DE FÃ · NÃO OFICIAL · ILUSTRAÇÕES ORIGINAIS · FEITO ESPECIALMENTE PARA EDU</footer>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <script src="script.js"></script>
+</body>
+</html>

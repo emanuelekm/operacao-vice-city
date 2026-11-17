@@ -1,118 +1,138 @@
-// Lançamento previsto para 19/11/2026 às 00:00 no horário de Brasília (UTC-3).
-// Para testar a tela de lançamento antes da hora, abra o site com ?teste=lancamento no final do endereço.
+// Lançamento: 19/11/2026 às 00:00, horário de Brasília (UTC-3).
+// Para ver a tela de lançamento antes da hora, abra o site com ?teste=lancamento no fim do endereço.
 const TEST_LAUNCH = new URLSearchParams(location.search).get('teste') === 'lancamento';
-const launchDate = TEST_LAUNCH ? Date.now() + 4000 : new Date('2026-11-19T00:00:00-03:00').getTime();
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const LAUNCH = TEST_LAUNCH ? Date.now() + 6000 : Date.parse('2026-11-19T00:00:00-03:00');
+const FIRST_TRAILER = Date.parse('2023-12-05T00:00:00-03:00');
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = s => document.querySelector(s);
 
-/* ---------- Tela de carregamento ---------- */
-const splash = document.querySelector('#splash');
-const loaderBar = document.querySelector('#loaderBar');
-const tipEl = document.querySelector('#splashTip');
-const startBtn = document.querySelector('#startBtn');
+/* ---------- START ---------- */
 const tips = [
-  'DICA: hidrate-se. A Player 2 está monitorando.',
-  'DICA: snacks restauram a vida instantaneamente.',
-  'DICA: nenhum controle descarregado será tolerado.',
-  'DICA: a carta no fundo da caixa só abre no lançamento.',
-  'CARREGANDO: saudades da Player 2... 100%'
+  'Carregando Leonida…',
+  'Dica: hidrate-se. A Player 2 está de olho.',
+  'Dica: snacks restauram a vida na hora.',
+  'Dica: controle descarregado não é desculpa.',
+  'Carregando saudades da Player 2…'
 ];
-let progress = 0, tipIndex = 0;
-const loadTimer = setInterval(() => {
-  progress = Math.min(100, progress + Math.random() * 14 + 4);
-  loaderBar.style.width = progress + '%';
+let progress = 0, tip = 0;
+const loading = setInterval(() => {
+  progress = Math.min(100, progress + 5 + Math.random() * 11);
+  $('#loaderBar').style.width = progress + '%';
   if (progress >= 100) {
-    clearInterval(loadTimer);
-    tipEl.textContent = 'TRANSMISSÃO PRONTA, AGENTE EDU.';
-    startBtn.hidden = false;
-    startBtn.focus();
+    clearInterval(loading);
+    $('#splashTip').textContent = 'Tudo pronto, Edu.';
+    $('#startBtn').hidden = false;
+    $('#startBtn').focus();
   }
-}, 220);
+}, 230);
 const tipTimer = setInterval(() => {
   if (progress >= 100) return clearInterval(tipTimer);
-  tipIndex = (tipIndex + 1) % tips.length;
-  tipEl.textContent = tips[tipIndex];
-}, 1100);
+  tip = (tip + 1) % tips.length;
+  $('#splashTip').textContent = tips[tip];
+}, 1200);
 
-function startTransmission() {
-  splash.classList.add('hide');
+$('#startBtn').addEventListener('click', () => {
+  $('#flash').classList.add('go');
+  $('#splash').classList.add('hide');
   document.body.classList.remove('is-loading');
-  document.querySelectorAll('.hero .reveal').forEach((el, i) => setTimeout(() => el.classList.add('visible'), 250 + i * 180));
+  document.body.classList.add('started');
+  setTimeout(() => { $('.hud-stars').classList.add('on'); countCash(); }, 500);
+});
+
+function countCash() {
+  const target = 1911, el = $('#cash'), t0 = performance.now();
+  (function step(t) {
+    const p = Math.min(1, (t - t0) / 1400);
+    el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))).toLocaleString('pt-BR');
+    if (p < 1) requestAnimationFrame(step);
+  })(t0);
 }
-startBtn.addEventListener('click', startTransmission);
 
 /* ---------- Revelar ao rolar ---------- */
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
-  });
-}, { threshold: 0.18 });
-document.querySelectorAll('.page .reveal').forEach(el => observer.observe(el));
+const io = new IntersectionObserver(entries => entries.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+}), { threshold: 0.2 });
+document.querySelectorAll('.reveal, .reveal-tilt').forEach(el => io.observe(el));
+
+// a barra de espera enche quando aparece
+const waitIo = new IntersectionObserver(([e]) => {
+  if (e.isIntersecting) { updateWait(); waitIo.disconnect(); }
+}, { threshold: 0.4 });
+waitIo.observe($('.wait'));
 
 /* ---------- Contagem regressiva ---------- */
-const fields = ['days', 'hours', 'minutes', 'seconds'].map(id => document.getElementById(id));
-const label = document.querySelector('#launchLabel');
-const status = document.querySelector('#liveStatus');
+const els = ['days', 'hours', 'minutes', 'seconds'].map(id => document.getElementById(id));
 let launched = false;
 
-function setField(el, value) {
-  const text = String(value).padStart(2, '0');
-  if (el.textContent === text) return;
-  el.textContent = text;
-  el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick');
+function setDigits(el, n) {
+  const txt = String(n).padStart(2, '0');
+  if (el.textContent === txt) return;
+  el.textContent = txt;
+  el.classList.remove('flip'); void el.offsetWidth; el.classList.add('flip');
 }
 
-function updateCountdown() {
-  const distance = launchDate - Date.now();
-  if (distance <= 0) {
-    if (!launched) onLaunch();
-    return;
-  }
-  setField(fields[0], Math.floor(distance / 86400000));
-  setField(fields[1], Math.floor(distance / 3600000) % 24);
-  setField(fields[2], Math.floor(distance / 60000) % 60);
-  setField(fields[3], Math.floor(distance / 1000) % 60);
+function tick() {
+  const left = LAUNCH - Date.now();
+  if (left <= 0) { if (!launched) launch(); return; }
+  setDigits(els[0], Math.floor(left / 86400000));
+  setDigits(els[1], Math.floor(left / 3600000) % 24);
+  setDigits(els[2], Math.floor(left / 60000) % 60);
+  setDigits(els[3], Math.floor(left / 1000) % 60);
 }
 
-function onLaunch() {
+// Data e hora do lançamento por extenso
+const fmtBR = opts => new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', ...opts }).format(LAUNCH);
+$('#launchDay').textContent = `${fmtBR({ weekday: 'long' }).replace('-feira', '')} · ${fmtBR({ day: 'numeric', month: 'long' })}`;
+$('#launchHour').textContent = `${fmtBR({ hour: '2-digit', minute: '2-digit' })} · horário de Brasília`;
+const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const localStr = new Intl.DateTimeFormat('pt-BR', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }).format(LAUNCH);
+if (fmtBR({ hour: '2-digit', minute: '2-digit', day: 'numeric' }) !== new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit', day: 'numeric' }).format(LAUNCH)) {
+  $('#localTime').textContent = `No seu fuso (${userTz.split('/').pop().replace('_', ' ')}): ${localStr}`;
+}
+
+function updateWait() {
+  const total = LAUNCH - FIRST_TRAILER, done = Math.min(total, Date.now() - FIRST_TRAILER);
+  const pct = Math.max(0, done / total * 100);
+  $('#waitBar').style.width = pct.toFixed(2) + '%';
+  $('#waitPct').textContent = (pct >= 99.9 && pct < 100 ? pct.toFixed(2) : pct.toFixed(1)).replace('.', ',') + '%';
+  const days = Math.floor(done / 86400000);
+  $('#waitNote').textContent = launched
+    ? `${days.toLocaleString('pt-BR')} dias de espera. Valeu cada um.`
+    : `${days.toLocaleString('pt-BR')} dias desde o primeiro trailer. Agora é reta final.`;
+}
+
+function launch() {
   launched = true;
-  fields.forEach(f => f.textContent = '00');
-  label.textContent = 'É HORA DE JOGAR · BOA MISSÃO, AGENTE EDU!';
-  status.textContent = '● LANÇAMENTO LIBERADO';
-  document.querySelector('#secretLetter').classList.add('unlocked');
-  document.querySelector('#letterLock').textContent = '💌';
-  document.querySelector('#letterTitle').textContent = 'ARQUIVO LIBERADO';
-  document.querySelector('#letterText').textContent = 'Chegou a hora, agente. Pegue a carta no fundo da caixa e leia antes de apertar START.';
+  els.forEach(el => el.textContent = '00');
+  $('#countdownTitle').textContent = 'É hora de jogar!';
+  $('.hud-stars').classList.add('alarm');
+  updateWait();
   if (!reduceMotion) confetti();
 }
 
-updateCountdown();
-setInterval(updateCountdown, 1000);
+tick();
+setInterval(tick, 1000);
 
-/* ---------- Confete no lançamento ---------- */
+/* ---------- Confete ---------- */
 function confetti() {
-  const canvas = document.querySelector('#confetti');
-  const ctx = canvas.getContext('2d');
-  const colors = ['#ff5aa8', '#ff9b54', '#a77aff', '#ffe08a', '#5ad1ff'];
-  const resize = () => { canvas.width = innerWidth * devicePixelRatio; canvas.height = innerHeight * devicePixelRatio; };
-  resize(); addEventListener('resize', resize);
-  const pieces = Array.from({ length: 180 }, () => ({
-    x: Math.random() * canvas.width, y: -Math.random() * canvas.height,
-    w: 6 + Math.random() * 8, h: 8 + Math.random() * 10,
-    vy: 2 + Math.random() * 4, vx: -1.5 + Math.random() * 3,
-    r: Math.random() * Math.PI, vr: -0.1 + Math.random() * 0.2,
-    c: colors[Math.floor(Math.random() * colors.length)]
+  const c = $('#confetti'), ctx = c.getContext('2d'), dpr = devicePixelRatio || 1;
+  const size = () => { c.width = innerWidth * dpr; c.height = innerHeight * dpr; };
+  size(); addEventListener('resize', size);
+  const colors = ['#ff3d8b', '#ffb648', '#3fc6d4', '#fff3e3', '#9bffb0', '#c2349b'];
+  const bits = Array.from({ length: 220 }, () => ({
+    x: Math.random() * c.width, y: -Math.random() * c.height, w: (6 + Math.random() * 8) * dpr, h: (9 + Math.random() * 10) * dpr,
+    vx: (-1.5 + Math.random() * 3) * dpr, vy: (2 + Math.random() * 4) * dpr, r: Math.random() * 6, vr: -.12 + Math.random() * .24,
+    col: colors[Math.random() * colors.length | 0]
   }));
-  const end = Date.now() + 7000;
+  const until = Date.now() + 8000;
   (function frame() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    pieces.forEach(p => {
-      p.x += p.vx * devicePixelRatio; p.y += p.vy * devicePixelRatio; p.r += p.vr;
-      if (p.y > canvas.height && Date.now() < end) { p.y = -20; p.x = Math.random() * canvas.width; }
-      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r);
-      ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w * devicePixelRatio, p.h * devicePixelRatio);
-      ctx.restore();
+    ctx.clearRect(0, 0, c.width, c.height);
+    bits.forEach(b => {
+      b.x += b.vx; b.y += b.vy; b.r += b.vr;
+      if (b.y > c.height && Date.now() < until) { b.y = -20; b.x = Math.random() * c.width; }
+      ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(b.r); ctx.fillStyle = b.col;
+      ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h * Math.abs(Math.cos(b.r))); ctx.restore();
     });
-    if (pieces.some(p => p.y < canvas.height)) requestAnimationFrame(frame);
-    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (bits.some(b => b.y < c.height)) requestAnimationFrame(frame); else ctx.clearRect(0, 0, c.width, c.height);
   })();
 }

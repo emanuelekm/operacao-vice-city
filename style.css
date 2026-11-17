@@ -179,3 +179,31 @@ footer{text-align:center;padding:18px 16px 26px;font-size:11px;color:#3a1a2c}
 .splash-ui{align-self:center}
 @keyframes artFloat{from{transform:translate(-50%,-50%) scale(1)}to{transform:translate(-50%,-52%) scale(1.06)}}
 @media(max-width:640px){.splash-art{width:150%;top:40%}}
+
+/* ===== Ajustes v5 ===== */
+/* START: só o logo, fundo em degradê escuro */
+.splash{background:radial-gradient(ellipse at 50% 38%,#3b1d6e 0%,#1d1340 45%,#0b0718 100%)}
+.splash:after{display:none}
+.splash-bg,.splash-art{display:none}
+.splash-glow{position:absolute;left:50%;top:40%;width:min(90vw,820px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle,#ff3d8b55 0%,#7b2a9a33 40%,transparent 70%);animation:glow 4s ease-in-out infinite;pointer-events:none}
+.splash-logo{position:absolute;z-index:1;left:50%;top:40%;width:min(78vw,560px,62vh);height:auto;transform:translate(-50%,-50%);
+  filter:drop-shadow(0 0 28px #ff3d8b88) drop-shadow(0 18px 30px #000a);animation:logoIn 1.2s cubic-bezier(.2,1.4,.4,1) both,logoFloat 5s 1.2s ease-in-out infinite alternate}
+@keyframes logoIn{from{opacity:0;transform:translate(-50%,-40%) scale(.7)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes logoFloat{from{transform:translate(-50%,-50%)}to{transform:translate(-50%,-53%) scale(1.03)}}
+@keyframes glow{0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}}
+.vhs{opacity:.5}
+
+/* HUD com foto */
+img.hud-avatar{object-fit:cover;border:2px solid var(--sun)}
+
+/* Quanto falta, por extenso */
+.left-text{margin-top:16px;font:900 italic clamp(22px,4.5vw,32px)/1.1 Rubik;color:#fff;text-shadow:3px 3px 0 var(--ink)}
+
+/* Cartaz: tudo dentro do card */
+.poster{width:min(380px,100%);padding:22px 22px 20px}
+.poster-head{font-size:clamp(34px,10vw,48px);letter-spacing:.02em;line-height:1;white-space:nowrap}
+.poster-photo{width:min(200px,70%);height:auto;aspect-ratio:9/10}
+.poster-initial{display:none}
+.poster-name{font-size:clamp(24px,7vw,32px);line-height:1.05;letter-spacing:.06em}
+.agent-photo{object-position:50% 15%}

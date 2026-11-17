@@ -4,20 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#2a1c63">
-  <title>Falta pouco, Edu</title>
+  <title>Falta pouco, Eduardo</title>
   <meta name="description" content="Uma surpresa da Player 2 para o Edu.">
-  <link rel="preload" as="image" href="img/logo-start.webp">
+  <link rel="preload" as="image" href="img/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,500;0,700;0,900;1,900&family=Yellowtail&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body class="is-loading">
 
   <!-- START -->
   <div class="splash" id="splash">
-    <div class="splash-bg" aria-hidden="true"></div>
-    <img class="splash-art" src="img/logo-start.webp" alt="">
+    <div class="splash-glow" aria-hidden="true"></div>
+    <img class="splash-logo" src="img/logo.png" alt="">
     <div class="vhs" aria-hidden="true"></div>
     <div class="splash-ui">
       <p class="splash-from">uma surpresa da sua Player 2</p>
@@ -30,7 +30,7 @@
 
   <!-- HUD -->
   <header class="hud">
-    <div class="hud-player"><span class="hud-avatar">E</span><span>Agente Edu</span></div>
+    <div class="hud-player"><img class="hud-avatar" src="img/avatar.jpg" alt=""><span>Eduardo Dunetz</span></div>
     <div class="hud-right">
       <div class="hud-stars" aria-label="Nível de procurado: 5 estrelas"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></div>
       <div class="hud-cash">$<span id="cash">0</span></div>
@@ -41,7 +41,7 @@
   <section class="hero">
     <div class="hero-media" aria-hidden="true"><img src="img/capa.webp" alt=""></div>
     <div class="hero-text">
-      <p class="script hero-script">pro Edu,</p>
+      <p class="script hero-script">pro Eduardo,</p>
       <h1 class="hero-title"><span>Falta</span> <span>pouco.</span></h1>
       <p class="hero-sub">Sua próxima grande aventura está quase começando, e a Player 2 preparou tudo pra você.</p>
       <a class="scroll-cue" href="#contagem" aria-label="Ver a contagem regressiva">↓</a>
@@ -50,8 +50,8 @@
 
   <div class="ticker" aria-hidden="true">
     <div class="ticker-track">
-      <span>Agente Edu</span><b>★</b><span>19.11.2026</span><b>★</b><span>Leonida te espera</span><b>★</b><span>Controle carregado</span><b>★</b><span>Snacks liberados</span><b>★</b>
-      <span>Agente Edu</span><b>★</b><span>19.11.2026</span><b>★</b><span>Leonida te espera</span><b>★</b><span>Controle carregado</span><b>★</b><span>Snacks liberados</span><b>★</b>
+      <span>Eduardo Dunetz</span><b>★</b><span>19.11.2026</span><b>★</b><span>Leonida te espera</span><b>★</b><span>Controle carregado</span><b>★</b><span>Snacks liberados</span><b>★</b>
+      <span>Eduardo Dunetz</span><b>★</b><span>19.11.2026</span><b>★</b><span>Leonida te espera</span><b>★</b><span>Controle carregado</span><b>★</b><span>Snacks liberados</span><b>★</b>
     </div>
   </div>
 
@@ -70,10 +70,11 @@
         <span class="pill pill-pink" id="launchDay">quinta · 19 de novembro</span>
         <span class="pill pill-sun" id="launchHour">00:00 · horário de Brasília</span>
       </div>
+      <p class="left-text" id="leftText"></p>
       <p class="local-time" id="localTime"></p>
 
       <div class="wait reveal">
-        <div class="wait-head"><span>Esperando desde o 1º trailer</span><strong id="waitPct">0%</strong></div>
+        <div class="wait-head"><span>Esperando desde o GTA V (2013)</span><strong id="waitPct">0%</strong></div>
         <div class="wait-bar"><i id="waitBar"></i></div>
         <p class="wait-note" id="waitNote"></p>
       </div>
@@ -99,13 +100,13 @@
       <article class="poster reveal">
         <p class="poster-head">PROCURADO</p>
         <div class="poster-photo">
-          <img class="agent-photo" src="foto.jpg" alt="Foto do Edu" onerror="this.remove()">
+          <img class="agent-photo" src="img/foto.jpg" alt="Foto do Eduardo">
           <span class="poster-initial" aria-hidden="true">E</span>
         </div>
-        <p class="poster-name">EDU</p>
+        <p class="poster-name">EDUARDO<br>DUNETZ</p>
         <dl class="poster-info">
           <div><dt>Crime</dt><dd>Roubar o coração da Player 2</dd></div>
-          <div><dt>Visto pela última vez</dt><dd>Contando as horas pro lançamento</dd></div>
+          <div><dt>Visto pela última vez</dt><dd>Esperando o jogo há 13 anos</dd></div>
           <div><dt>Recompensa</dt><dd>Um beijo (pago na entrega)</dd></div>
         </dl>
         <div class="poster-stars" aria-hidden="true"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></div>
@@ -121,8 +122,8 @@
     </section>
   </main>
 
-  <footer>Feito com carinho para o Edu · projeto de fã, sem vínculo com a Rockstar Games · imagens de divulgação © Rockstar Games</footer>
+  <footer>Feito com carinho para Eduardo Dunetz · projeto de fã, sem vínculo com a Rockstar Games · imagens de divulgação © Rockstar Games</footer>
   <canvas id="confetti" aria-hidden="true"></canvas>
-  <script src="script.js"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>

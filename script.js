@@ -2,7 +2,7 @@
 // Para ver a tela de lançamento antes da hora, abra o site com ?teste=lancamento no fim do endereço.
 const TEST_LAUNCH = new URLSearchParams(location.search).get('teste') === 'lancamento';
 const LAUNCH = TEST_LAUNCH ? Date.now() + 6000 : Date.parse('2026-11-19T00:00:00-03:00');
-const FIRST_TRAILER = Date.parse('2023-12-05T00:00:00-03:00');
+const WAIT_START = Date.parse('2013-09-17T00:00:00-03:00'); // lançamento do GTA V
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = s => document.querySelector(s);
 
@@ -20,7 +20,7 @@ const loading = setInterval(() => {
   $('#loaderBar').style.width = progress + '%';
   if (progress >= 100) {
     clearInterval(loading);
-    $('#splashTip').textContent = 'Tudo pronto, Edu.';
+    $('#splashTip').textContent = 'Tudo pronto, Eduardo.';
     $('#startBtn').hidden = false;
     $('#startBtn').focus();
   }
@@ -74,6 +74,7 @@ function setDigits(el, n) {
 function tick() {
   const left = LAUNCH - Date.now();
   if (left <= 0) { if (!launched) launch(); return; }
+  updateLeftText(left);
   setDigits(els[0], Math.floor(left / 86400000));
   setDigits(els[1], Math.floor(left / 3600000) % 24);
   setDigits(els[2], Math.floor(left / 60000) % 60);
@@ -83,7 +84,7 @@ function tick() {
 // Data e hora do lançamento por extenso
 const fmtBR = opts => new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', ...opts }).format(LAUNCH);
 $('#launchDay').textContent = `${fmtBR({ weekday: 'long' }).replace('-feira', '')} · ${fmtBR({ day: 'numeric', month: 'long' })}`;
-$('#launchHour').textContent = `${fmtBR({ hour: '2-digit', minute: '2-digit' })} · horário de Brasília`;
+$('#launchHour').textContent = 'à meia-noite · horário de Brasília';
 const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const localStr = new Intl.DateTimeFormat('pt-BR', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }).format(LAUNCH);
 if (fmtBR({ hour: '2-digit', minute: '2-digit', day: 'numeric' }) !== new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit', day: 'numeric' }).format(LAUNCH)) {
@@ -91,20 +92,31 @@ if (fmtBR({ hour: '2-digit', minute: '2-digit', day: 'numeric' }) !== new Intl.D
 }
 
 function updateWait() {
-  const total = LAUNCH - FIRST_TRAILER, done = Math.min(total, Date.now() - FIRST_TRAILER);
+  const total = LAUNCH - WAIT_START, done = Math.min(total, Date.now() - WAIT_START);
   const pct = Math.max(0, done / total * 100);
   $('#waitBar').style.width = pct.toFixed(2) + '%';
   $('#waitPct').textContent = (pct >= 99.9 && pct < 100 ? pct.toFixed(2) : pct.toFixed(1)).replace('.', ',') + '%';
   const days = Math.floor(done / 86400000);
+  const years = Math.floor(done / (365.25 * 86400000));
   $('#waitNote').textContent = launched
-    ? `${days.toLocaleString('pt-BR')} dias de espera. Valeu cada um.`
-    : `${days.toLocaleString('pt-BR')} dias desde o primeiro trailer. Agora é reta final.`;
+    ? `${years} anos e ${days.toLocaleString('pt-BR')} dias de espera. Valeu cada um.`
+    : `${years} anos esperando, ${days.toLocaleString('pt-BR')} dias desde o GTA V. Agora é reta final.`;
+}
+
+function updateLeftText(left) {
+  const d = Math.floor(left / 86400000), h = Math.floor(left / 3600000) % 24, m = Math.floor(left / 60000) % 60;
+  const parts = [];
+  if (d) parts.push(d + (d === 1 ? ' dia' : ' dias'));
+  if (h) parts.push(h + (h === 1 ? ' hora' : ' horas'));
+  if (!d) parts.push(m + (m === 1 ? ' minuto' : ' minutos'));
+  $('#leftText').textContent = 'Faltam ' + parts.join(' e ') + '!';
 }
 
 function launch() {
   launched = true;
   els.forEach(el => el.textContent = '00');
   $('#countdownTitle').textContent = 'É hora de jogar!';
+  $('#leftText').textContent = 'Liberado! Boa missão, Eduardo.';
   $('.hud-stars').classList.add('alarm');
   updateWait();
   if (!reduceMotion) confetti();

@@ -9,10 +9,10 @@ const $ = s => document.querySelector(s);
 /* ---------- START ---------- */
 const tips = [
   'Carregando Leonida…',
-  'Dica: hidrate-se. A Player 2 está de olho.',
+  'Dica: hidrate-se. Sua namorada está de olho.',
   'Dica: snacks restauram a vida na hora.',
   'Dica: controle descarregado não é desculpa.',
-  'Carregando saudades da Player 2…'
+  'Carregando saudades da sua namorada…'
 ];
 let progress = 0, tip = 0;
 const loading = setInterval(() => {

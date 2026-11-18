@@ -16,9 +16,9 @@ h1,h2,p{margin:0}
 .splash-bg{position:absolute;inset:-4%;background:url(img/logo-start.webp) center 42%/cover no-repeat;animation:kenburns 16s ease-in-out infinite alternate}
 .splash:after{content:'';position:absolute;inset:auto 0 0;height:46%;background:linear-gradient(transparent,#2a1c63ee 70%)}
 .vhs{position:absolute;inset:0;z-index:2;pointer-events:none;background:repeating-linear-gradient(0deg,#0000 0 2px,#00000014 2px 4px);animation:vhs 7s steps(1) infinite}
-.splash-ui{position:relative;z-index:3;text-align:center;padding:0 24px 9vh;width:min(440px,100%)}
+.splash-ui{position:relative;z-index:3;text-align:center;padding:0 20px 9vh;width:min(720px,100%)}
 .splash-from{font:400 clamp(26px,6vw,36px)/1 Yellowtail,cursive;color:#fff;text-shadow:0 2px 0 var(--pink),0 0 24px #ff3d8b99}
-.loader{height:8px;margin:22px auto 12px;background:#ffffff26;border-radius:99px;overflow:hidden}
+.loader{height:12px;width:100%;margin:22px auto 12px;background:#ffffff26;border-radius:99px;overflow:hidden}
 .loader i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--teal),var(--pink),var(--sun));transition:width .25s linear}
 .splash-tip{font-size:13px;color:#ffe9f6;min-height:22px}
 .start-btn{margin-top:16px;font:900 italic 20px/1 Rubik,sans-serif;letter-spacing:.06em;color:var(--ink);background:var(--sun);border:0;border-radius:6px;padding:16px 30px;cursor:pointer;
@@ -207,3 +207,4 @@ img.hud-avatar{object-fit:cover;border:2px solid var(--sun)}
 .poster-initial{display:none}
 .poster-name{font-size:clamp(24px,7vw,32px);line-height:1.05;letter-spacing:.06em}
 .agent-photo{object-position:50% 15%}
+.finale-love{line-height:1.05}
